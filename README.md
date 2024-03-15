@@ -4,22 +4,22 @@ This project is a web scraper designed to extract all furniture products from va
 
 ## Project Description
 
-The classification model leverages pretrained BERT-base and adds one fuly connected classification layer on top of it with 2 labels(true and false).It is fine tuned on my data which I scraped from different related or non related sources(eg. furniture blogs or ikea website etc).  
+The classification model leverages pretrained BERT-base and adds one fully connected classification layer on top of it with 2 labels(true and false).It is fine tuned on my data which I scraped from different related or nonrelated sources(eg. furniture blogs or Ikea website etc).  
 The scraper leverages selenium and BeautifulSoup library.
 
 
 ## Considerations
-1. The websites to crawl are in english 
-2. Product names are allways isolated within commonhtml tags.
-3. Due to the fact that the products are isolated, a classification model is preffered instead of a NER model.
+1. The websites to crawl are in English .
+2. Product names are always isolated within commonhtml tags.
+3. Due to the fact that the products are isolated, a classification model is preferred instead of a NER model.
 4. The products extracted should be case insensitive
 
 ## Model 
 Due to the fact that some websites may present products in lower case, I went for bert-base uncased for robustness.
 
-Initially, I explored various recommendations for utilizing Named Entity Recognition (NER) from every possible angle. My first attempt involved creating an NER model designed to label product entities within a given page source.For training purposes, I utilized pages randomly crawled from different ecommerce websites, inserting furniture products texts within them. However, this approach performed poorly due to the fact that the ratio of Outside entities to B and I entities was highly unbalances: 10:1 or even higher.
+Initially, I explored various recommendations for utilizing Named Entity Recognition (NER) from every possible angle. My first attempt involved creating an NER model designed to label product entities within a given page source.For training purposes, I utilized pages randomly crawled from different eCommerce websites, inserting furniture products texts within them. However, this approach performed poorly due to the fact that the ratio of Outside entities to B and I entities was highly unbalances: 10:1 or even higher.
 
-For the latter method, I experimented with applying a NER model to every text node extracted from the page source.To train it, I inserted products into random HTML text tags from different ecommercee websites and businesses, labeling them with the IOB tagging scheme.  
+For the latter method, I experimented with applying a NER model to every text node extracted from the page source.To train it, I inserted products into random HTML text tags from different eCommerce websites and businesses, labeling them with the IOB tagging scheme.  
 This approach yielded improved results, but led me to conclude that, given we only have two possible entities (product and non-product), it is significantly more effective and efficient to employ a binary classification model and apply it to every text node in the page source.  
 
 I've opted for a classification model approach primarily for its speed and its ability to leverage the HTML structure of a website for more accurate data extraction. By training the model to recognize patterns associated with furniture-related content from the html tags, we can efficiently filter out irrelevant data and focus on the extraction of valuable product information.  
@@ -38,7 +38,7 @@ I had a problem with the negative labels because the true negatives were related
 
 The solution I found was to build a set of negative labels dataset containing 40% furniture related text and 60% english text from ecommercee businesses and websites.
 
-To acomplish this, I crawled furniture blogs, mainly because they provide furniture related text that doesn't contain real products and some more random ecommerce websites generated with copilot.(22392 samples for blogs and 36659 for the rest)   
+To accomplish this, I crawled furniture blogs, mainly because they provide furniture related text that doesn't contain real products and some more random ecommerce websites generated with copilot.(22392 samples for blogs and 36659 for the rest)   
 Training data is available for download at the links section below.
 
 Here are the metrics of the model:  
@@ -55,7 +55,7 @@ The crawler extracts all possible tags capable of containing text, processes eac
 The crawl function has 3 arguments:  
     > urls,  
 	> threshold, -> (The threshold is used to extract the text which has a probability to be a product greater than it)  
-	> threaded, -> (false for single threaded, tru for multi-threading)  
+	> threaded, -> (false for single threaded, true for multi-threading)  
 	> num_workers = None (How many working threads)  
 
 ## Features
