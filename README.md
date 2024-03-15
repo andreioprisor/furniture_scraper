@@ -19,7 +19,7 @@ Due to the fact that some websites may present products in lower case, I went fo
 
 Initially, I explored various recommendations for utilizing Named Entity Recognition (NER) from every possible angle. My first attempt involved creating an NER model designed to label product entities within a given page source.For training purposes, I utilized pages randomly crawled from the list below, inserting products within them.  However, this approach performed poorly due to the fact that the ratio of Outside entities to B a I entities was highly unbalances: 10:1 or even higher.
 
-For the latter method, I experimented with applying a NER model to every text node extracted from the page source.To train it, I inserted products into random HTML text tags from different eccomerce websites and businesses, labeling them as products with the IOB tagging scheme.  
+For the latter method, I experimented with applying a NER model to every text node extracted from the page source.To train it, I inserted products into random HTML text tags from different eccomerce websites and businesses, labeling them with the IOB tagging scheme.  
 This approach yielded improved results, but led me to conclude that, given we only have two possible entities (product and non-product), it is significantly more effective and efficient to employ a binary classification model and apply it to every text node in the page source.  
 
 I've opted for a classification model approach primarily for its speed and its ability to leverage the HTML structure of a website for more accurate data extraction. By training the model to recognize patterns associated with furniture-related content from the html tags, we can efficiently filter out irrelevant data and focus on the extraction of valuable product information.  
@@ -37,6 +37,7 @@ For the positive labels I crawled the following websites:
 I had a problem with the negative labels because the true negatives were related to furniture products(eg. product descriptions, instructions on how to mount, site descriptions etc).Therefore, the first model I trained had a really good precision but bad accuracy due to the false positives.    
 
 The solution I found was to build a set of negative labels dataset containing 40% furniture related text and 60% english text from eccomerce businesses and websites.
+
 To acomplish this, I crawled furniture blogs, mainly because they provide furniture related text that doesn't contain real products and some more random ecommerce websites generated with copilot.(22392 samples for blogs and 36659 for the rest)   
 Training data is available for download at the links section below.
 
@@ -47,7 +48,10 @@ Here are the metrics of the model:
 For fetching the sources, I initially went with the requests module. However, many websites had annoying pop-ups and cookies that limited the scraper's effectiveness. Consequently, I opted for Selenium in headless mode to better manage these pop-ups, either by accepting or rejecting them.
 
 The scraper from crawler.py uses selenium in headless mode coupled with Beautiful Soup library.	I've written a function to bypass any pop-up or accept any cookies button, because many urls don't return anything due to this problem.  
-We are extracting all possible tags that can contain text, then we apply the model and then we sort the results in the descending orders of the probabilities. 
+
+
+The crawler extracts all possible tags capable of containing text, processes each through the model, and then appends them to another list. This list is subsequently sorted in descending order based on the probability of being a product or not, forming a prioritized queue of elements for further analysis.
+
 The crawl function has 3 argumets:
 	urls, 
 	threshold, -> (The threshold is used to extract the text which has a probability to be a product greater than it)
