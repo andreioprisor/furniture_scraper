@@ -64,8 +64,8 @@ class Crawler:
 			driver.execute_script(js_script)
 		except Exception as e:
 			pass
-
-
+	
+	## This function is used to scrape the products from the given urls by returning top candidates based on the probability
 	def scraper(self, urls, threshold, lock=None):
 		products = []
 		options = Options()
@@ -90,9 +90,9 @@ class Crawler:
 				for header in headers:
 					t = header.get_text(separator='~~',strip=True)
 					products.append((t, self.get_prediction(self.tokenizer, self.model, t)))
-
+				# Many websites have their products in the form of links, so we need to extract the text from those links to infer in the model
 				for link in links:
-					t = link.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'])
+					t = link.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'font'])
 					if t is None:
 						texts = link.get_text(separator='~~',strip=True).split('~~')
 						for text in texts:
@@ -112,7 +112,7 @@ class Crawler:
 					f.write(f'''{url}, "{str(products).replace('"', '')}"\n''')
 		driver.quit()
 
-
+	# Function used to crawl the given urls either in a multi-threaded or single-threaded manner
 	def crawl(self, urls, threshold, threaded, num_workers = None):
 		if threaded:
 			threads = []
