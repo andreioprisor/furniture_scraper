@@ -17,16 +17,16 @@ The scraper leverages selenium and BeautifulSoup library.
 ## Model 
 Due to the fact that some websites may present products in lower case, I went for bert-base uncased for robustness.
 
-Initially, I explored various recommendations for utilizing Named Entity Recognition (NER) from every possible angle. My first attempt involved creating an NER model designed to label product entities within a given page source.For training purposes, I utilized pages randomly crawled from the list below, inserting products within them.  However, this approach performed poorly due to the fact that the ratio of Outside entities to B a I entities was highly unbalances: 10:1 or even higher.
+Initially, I explored various recommendations for utilizing Named Entity Recognition (NER) from every possible angle. My first attempt involved creating an NER model designed to label product entities within a given page source.For training purposes, I utilized pages randomly crawled from different ecommerce websites, inserting furniture products texts within them. However, this approach performed poorly due to the fact that the ratio of Outside entities to B and I entities was highly unbalances: 10:1 or even higher.
 
-For the latter method, I experimented with applying a NER model to every text node extracted from the page source.To train it, I inserted products into random HTML text tags from different   ecommercee websites and businesses, labeling them with the IOB tagging scheme.  
+For the latter method, I experimented with applying a NER model to every text node extracted from the page source.To train it, I inserted products into random HTML text tags from different ecommercee websites and businesses, labeling them with the IOB tagging scheme.  
 This approach yielded improved results, but led me to conclude that, given we only have two possible entities (product and non-product), it is significantly more effective and efficient to employ a binary classification model and apply it to every text node in the page source.  
 
 I've opted for a classification model approach primarily for its speed and its ability to leverage the HTML structure of a website for more accurate data extraction. By training the model to recognize patterns associated with furniture-related content from the html tags, we can efficiently filter out irrelevant data and focus on the extraction of valuable product information.  
 
 The model was trained with TrainModel class from train_model.py file, freezing the layers and using hugging face BERT-base model for 25 epochs. 
 
-For the positive labels I crawled the following websites:  
+For the positive labels I crawled the following websites(both in the NER and Classification approaches):  
 1. IKEA(12788 samples)  
 2. EBAY(4057 samples)  
 3. FLIPKART(5605 samples)  
