@@ -52,11 +52,11 @@ The scraper from crawler.py uses selenium in headless mode coupled with Beautifu
 
 The crawler extracts all possible tags capable of containing text, processes each through the model, and then appends them to another list. This list is subsequently sorted in descending order based on the probability of being a product or not, forming a prioritized queue of elements for further analysis.
 
-The crawl function has 3 argumets:
-	urls, 
-	threshold, -> (The threshold is used to extract the text which has a probability to be a product greater than it)
-	threaded, -> (false for single threaded, tru for multi-threading)
-	num_workers = None (How many working threads)
+The crawl function has 3 argumets:  
+	urls,  
+	threshold, -> (The threshold is used to extract the text which has a probability to be a product greater than it)  
+	threaded, -> (false for single threaded, tru for multi-threading)  
+	num_workers = None (How many working threads)  
 
 ## Features
 
