@@ -1,0 +1,12 @@
+selenium
+webdriver_manager
+torch
+numpy
+bs4
+transformers
+pandas
+scikit-learn
+pyarrow
+datasets
+webdriver_manager
+pandas
