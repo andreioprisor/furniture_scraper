@@ -22,7 +22,7 @@ class Crawler:
 		self.lock = None
 		self.tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
 		device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-		self.model = AutoModelForSequenceClassification.from_pretrained('/home/oda/personal-projects/model_results/checkpoint-76000').to(device)
+		self.model = AutoModelForSequenceClassification.from_pretrained('checkpoint-76000').to(device)
 
 	def get_prediction(self, tokenizer, model, text):
 		device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
